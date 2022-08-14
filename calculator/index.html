@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            display : flex;
+            justify-content : center;
+            background : black;
+            align-items: center;
+            height : 100vh;
+            
+        }
+        .box{
+            width : 400px;
+            transition : 2s;
+        }
+        .box:hover{
+            box-shadow : 1px 1px 20px red;
+        }
+        .box:hover .space{
+            
+            box-shadow : none;
+        }
+        .space{
+            height : 100px;
+            width : 395px;
+            text-align : right;
+            border : 0px;
+            margin : 0px;
+            background : transparent;
+            margin-bottom : 10px;
+            outline: none;
+            transition :2s;
+            font-size : 70px;
+            color : red;
+
+        }
+        .btn{
+            width : 20%;
+            height : 50px;
+            margin : 2%;
+            box-shadow : 1px 2px 2px red;
+            border-radius : 50%;
+            background : transparent;
+            color : white;
+            text-align:center;
+            font-size : 15px;
+            transition : 1s;
+            outline : none;
+
+        }
+        .btn:hover{
+            box-shadow : 2px 3px 20px green;
+        }
+        .btn1{
+            box-shadow : 1px 2px 2px green;
+            transition : 1s;
+        }
+        .btn1:hover{
+            box-shadow : 1px 2px 20px red;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class = "box">
+        <div class = "space" id = "put">
+            <p id = "history_value"></p>
+        </div>
+        <div class = "space" readonly="" id = "output">
+            <p id = "output_value"></p>
+
+        </div>
+        <div>
+            <button class = "btn operator" id = "clear">C</button>
+            <button class = "btn operator"  id = "backspace">CE</button>
+            <button class = "btn operator"  id = '/'>%</button>
+            <button class = "btn operator btn1" >?</button>
+            <button class = "btn number"  id = "7">7</button>
+            <button class = "btn number"   id = "8">8</button>
+            <button class = "btn number"  id="9">9</button>
+            <button class = "btn operator btn1"  id = '*'>X</button>
+            <button class = "btn number"  id = "4">4</button>
+            <button class = "btn number"  id = '5'>5</button>
+            <button class = "btn number"  id = "6">6</button>
+            <button class = "btn operator btn1"  id = "-">-</button>
+            <button class = "btn number"id = '1'>1</button>
+            <button class = "btn number"  id = "2">2</button>
+            <button class = "btn number" id = "3">3</button>
+            <button class = "btn operator btn1" id = "+">+</button>
+            <button class = "btn number"  id = ",">,</button>
+            <button class = "btn number"  id = "0">O</button>
+            <button class = "btn number"  id = "." >.</button>
+            <button class = "btn operator btn1"  id = "=">=</button>
+
+
+        </div>
+        
+
+    </div>
+    
+</body>
+<script>
+    
+    function get_history(){
+        return document.getElementById('history_value').innerText;
+    }
+    function print_history(num){
+        document.getElementById("history_value").innerText = num;
+    }
+    function get_output(){
+        return document.getElementById("output_value").innerText;
+    }
+    function print_output(val){
+        document.getElementById('output_value').innerHTML=val;
+    }
+    function reversenumberformat(num){
+        return Number(num.replace(/,/g,''))
+    }
+    
+    var oper = document.getElementsByClassName('operator');
+    for (var i = 0; i<oper.length; i+=1){
+        oper[i].addEventListener('click',function(){
+            if (this.id=="clear"){
+                print_output("");
+                print_history("");
+            }
+            else if (this.id=="backspace"){
+                var output = reversenumberformat(get_output()).toString();
+                if(output){
+                    output = output.substr(0,output.length-1);
+                    print_output(output);
+                }
+            }
+            else{
+                var output = get_output();
+                var history = get_history();
+                if (output!=""){
+                    output = reversenumberformat(output)
+                    history = history+output;
+                    if (this.id == "="){
+                        var result = eval(history);
+                        print_output(result);
+                        print_history("")
+                    }
+                    else{
+                        history = history+this.id;
+                        print_history(history);
+                        print_output('');
+                    }
+                }
+            }
+             
+        })
+    }
+    var num = document.getElementsByClassName('number');
+    for (var i = 0; i<num.length; i+=1){
+        num[i].addEventListener('click',function(){
+            var output =reversenumberformat(get_output());
+            if (output != NaN){
+                output = output+this.id;
+                print_output(output);
+            }
+        })
+    }
+</script>
+</html>
